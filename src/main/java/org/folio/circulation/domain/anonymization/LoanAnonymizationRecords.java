@@ -21,6 +21,8 @@ public class LoanAnonymizationRecords {
   }
 
   public LoanAnonymizationRecords withLoansFound(Collection<Loan> loans) {
+    //todo remove comment
+    System.out.printf("***FOUND %d CLOSED LOANS", loans.size());
     if (CollectionUtils.isEmpty(loans)) {
       return this;
     }

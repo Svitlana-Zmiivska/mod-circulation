@@ -30,6 +30,9 @@ public class AnonymizeLoansRepresentation {
     response
         .withAnonymizedLoans(records.getAnonymizedLoans())
         .withErrors(mapToErrors(records.getNotAnonymizedLoans()));
+
+    System.out.println("response = " + response);
+
     return new OkJsonResponseResult(JsonObject.mapFrom(response));
 
   }

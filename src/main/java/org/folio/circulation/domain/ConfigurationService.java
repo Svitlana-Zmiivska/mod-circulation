@@ -6,6 +6,8 @@ import java.lang.invoke.MethodHandles;
 import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
+import org.folio.circulation.domain.anonymization.config.LoanHistoryTenantConfiguration;
+import org.folio.circulation.domain.anonymization.config.LoanHistoryTenantConfiguration;
 import org.joda.time.DateTimeZone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ class ConfigurationService {
   private static final DateTimeZone DEFAULT_DATE_TIME_ZONE = DateTimeZone.UTC;
   private static final String TIMEZONE_KEY = "timezone";
   private static final String RECORDS_NAME = "configs";
+  private static final String DEFAULT_LOAN_PERIOD_VALUE = "EMPTY_VALUE";
 
   DateTimeZone findDateTimeZone(JsonObject representation) {
     return from(representation, Configuration::new, RECORDS_NAME)
@@ -47,6 +50,19 @@ class ConfigurationService {
     log.info("Scheduled notices processing limit: `{}`", noticesLimit);
 
     return noticesLimit;
+  }
+
+  LoanHistoryTenantConfiguration findConfigurationPeriod(Collection<Configuration> configurations) {
+    final String period = configurations.stream()
+        .map(this::applyConfigurationPeriod)
+        .findFirst()
+        .orElse(DEFAULT_LOAN_PERIOD_VALUE);
+
+    return LoanHistoryTenantConfiguration.from(new JsonObject(period));
+  }
+
+  private String applyConfigurationPeriod(Configuration config) {
+    return config.getValue();
   }
 
   private Integer applySchedulerNoticesLimit(Configuration config) {

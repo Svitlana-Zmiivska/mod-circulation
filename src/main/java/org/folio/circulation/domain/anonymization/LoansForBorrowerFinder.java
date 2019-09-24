@@ -24,6 +24,6 @@ public class LoansForBorrowerFinder extends DefaultLoansFinder {
   public CompletableFuture<Result<Collection<Loan>>> findLoansToAnonymize() {
 
     return loanRepository.findClosedLoans(userId, FETCH_LOANS_LIMIT)
-      .thenCompose(this::fillLoanInformation);
+      .thenCompose(this::fetchAdditionalLoanInfo);
   }
 }

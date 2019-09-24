@@ -20,7 +20,7 @@ abstract class DefaultLoansFinder implements LoanAnonymizationFinderService {
     accountRepository = new AccountRepository(anonymization.clients());
   }
 
-  CompletableFuture<Result<Collection<Loan>>> fillLoanInformation(
+  CompletableFuture<Result<Collection<Loan>>> fetchAdditionalLoanInfo(
       Result<MultipleRecords<Loan>> records) {
 
     return records.after(accountRepository::findAccountsForLoans)
